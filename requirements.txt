@@ -1,0 +1,12 @@
+sanic
+opencv-python
+numpy
+aiohttp
+requests
+
+# dev
+isort
+black
+flake8
+mypy
+types-requests
