@@ -15,6 +15,8 @@ source tmp-env/bin/active
 
 `./bin/run`
 
+-> app will be running on "http://localhost:8000"
+
 # Linting
 
 `./bin/lint`
