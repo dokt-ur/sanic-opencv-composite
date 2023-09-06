@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 import cv2
 import numpy as np
 from sanic import Sanic, response
@@ -6,6 +8,9 @@ from helper import download_images
 from sling_api import get_image_urls
 
 app = Sanic("my-app")
+
+
+AUTO_DOWNLOAD = False
 
 
 @app.route("/")
@@ -58,10 +63,17 @@ async def test(request):
     _, composite_img = cv2.imencode(".jpg", composite_img)
 
     # Set the appropriate response headers for an image
-    headers = {"Content-Type": "image/jpg"}
+    content_disposition = ""
+    if AUTO_DOWNLOAD:
+        content_disposition += "attachment; "
+    content_disposition += f"filename=composition-{uuid4()}.jpg"
+
+    headers = {"Content-Disposition": content_disposition}
 
     # Stream the image data as a response
-    return response.raw(composite_img.tobytes(), headers=headers)
+    return response.raw(
+        composite_img.tobytes(), headers=headers, content_type="image/jpg"
+    )
 
 
 if __name__ == "__main__":
